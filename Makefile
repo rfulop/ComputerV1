@@ -21,7 +21,8 @@ INC_PATH = ./include/
 LIB_PATH = ./
 
 SRC_FILES = main.cpp \
-			Equation.cpp
+			Equation.cpp \
+			Expression.cpp
 
 INC_FILES = computerv1.h
 LIB_FILES =

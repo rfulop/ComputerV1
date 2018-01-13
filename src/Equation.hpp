@@ -6,7 +6,7 @@
 /*   By: rfulop <rfulop@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/06 05:47:13 by rfulop            #+#    #+#             */
-/*   Updated: 2018/01/12 02:18:35 by rfulop           ###   ########.fr       */
+/*   Updated: 2018/01/13 17:53:23 by rfulop           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,12 @@ public:
     std::string delSpaces(const std::string & str);
     void solveDegree(void);
 
+
 private:
     std::string _expression;
     int _degree;
+    Expression* _right;
+    Expression* _left;
 
 };
 

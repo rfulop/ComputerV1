@@ -6,7 +6,7 @@
 /*   By: rfulop <rfulop@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/06 05:47:13 by rfulop            #+#    #+#             */
-/*   Updated: 2018/01/12 02:24:55 by rfulop           ###   ########.fr       */
+/*   Updated: 2018/01/13 19:46:03 by rfulop           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,12 @@
 Equation::Equation(std::string expression)
 : _expression(expression), _degree(0)
 {
+    solveDegree();
+    std::string str = delSpaces(this->_expression);
+    this->_left = new Expression(str.substr(0, str.find('=')), this->_degree);
+    this->_right = new Expression(str.substr(str.find('=') + 1), this->_degree);
+
+    std::cout << *this->_left << std::endl << *this->_right;
 }
 
 Equation::~Equation(void)
@@ -47,13 +53,13 @@ void Equation::solveDegree(void)
     std::string str = delSpaces(this->_expression);
     for (unsigned int i = 0; i < str.size(); ++i)
     {
-        if (str[i] == '^' && isdigit(str[i + 1]))
+        if (str[i] == 'X' && str[i + 1] == '^' && isdigit(str[i + 2]))
         {
-            if (std::atoi(&str[i + 1]) > this->_degree)
-                this->_degree = std::atoi(&str[i + 1]);
+            if (std::atoi(&str[i + 2]) > this->_degree)
+                this->_degree = std::atoi(&str[i + 2]);
         }
     }
-    if (!this->_degree && str.find_first_of('X') != std::string::npos)
+    if (!this->_degree && str.rfind("X^") != std::string::npos)
         this->_degree = 1;
 }
 
