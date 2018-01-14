@@ -6,7 +6,7 @@
 /*   By: rfulop <rfulop@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/06 05:47:13 by rfulop            #+#    #+#             */
-/*   Updated: 2018/01/13 19:45:16 by rfulop           ###   ########.fr       */
+/*   Updated: 2018/01/14 02:36:12 by rfulop           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,13 @@ int main(int argc, char **argv)
 	else
 	{
 		Equation e(argv[1]);
+		e.reducedForm();
+		e.setReducedForm();
+		e.solveDegree();
+		e.solve();
 		std::cout << e;
+		std::cout << *e.getLeft();
+
     }
 	return 0;
 }

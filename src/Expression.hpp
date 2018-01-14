@@ -6,7 +6,7 @@
 /*   By: rfulop <rfulop@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/06 05:47:13 by rfulop            #+#    #+#             */
-/*   Updated: 2018/01/13 19:54:51 by rfulop           ###   ########.fr       */
+/*   Updated: 2018/01/14 01:17:13 by rfulop           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,10 @@ public:
     float getDelta(void) const;
     std::vector<float> getExpr(void) const;
     std::vector<float> getSolutions(void) const;
+
+    void setA(float n);
+    void setB(float n);
+    void setC(float n);
 
 private:
     std::vector<float> _expr;

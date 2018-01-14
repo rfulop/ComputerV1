@@ -6,7 +6,7 @@
 /*   By: rfulop <rfulop@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/06 05:47:13 by rfulop            #+#    #+#             */
-/*   Updated: 2018/01/13 18:52:10 by rfulop           ###   ########.fr       */
+/*   Updated: 2018/01/14 02:16:23 by rfulop           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 #include <cstdlib>
 #include <vector>
 #include <cmath>
+#include <sstream>
+#include <iomanip>
 
 class Equation;
 class Expression;
@@ -27,5 +29,12 @@ class Expression;
 
 #define SPACE ' '
 #define OP "+-"
+#define X " * "
+#define EGUAL "= "
+#define X0 " * X^0 "
+#define X1 " * X^1 "
+#define X2 " * X^2 "
+#define PLUS " + "
+#define LESS " - "
 
 #endif
