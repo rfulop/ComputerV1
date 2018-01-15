@@ -6,7 +6,7 @@
 /*   By: rfulop <rfulop@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/06 05:47:13 by rfulop            #+#    #+#             */
-/*   Updated: 2018/01/15 00:22:36 by rfulop           ###   ########.fr       */
+/*   Updated: 2018/01/15 14:22:08 by rfulop           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,16 @@ Equation::Equation(std::string expression)
 {
     solveDegree();
     std::string str = delSpaces(this->_expression);
-    this->_left = new Expression(str.substr(0, str.find('=')), this->_degree);
-    this->_right = new Expression(str.substr(str.find('=') + 1), this->_degree);
-
-    // std::cout << *this->_left << std::endl << *this->_right;
+    try
+    {
+        this->_left = new Expression(str.substr(0, str.find('=')), this->_degree);
+        this->_right = new Expression(str.substr(str.find('=') + 1), this->_degree);
+    }
+    catch(std::exception & e)
+    {
+        std::cout << "This is not a Polynomial expression or it is not well formated." << std::endl;
+        exit (-1);
+    }
 }
 
 Equation::~Equation(void)
@@ -38,30 +44,11 @@ Equation & Equation::operator=(const Equation & rhs)
     return *this;
 }
 
-std::string Equation::getExpression(void) const
-{
-    return this->_expression;
-}
-
-std::string Equation::getRedExpr(void) const
-{
-    return this->_red;
-}
-
-int Equation::getDegree(void) const
-{
-    return this->_degree;
-}
-
-Expression * Equation::getRight(void) const
-{
-    return this->_right;
-}
-
-Expression * Equation::getLeft(void) const
-{
-    return this->_left;
-}
+std::string Equation::getExpression(void) const { return this->_expression; }
+std::string Equation::getRedExpr(void) const { return this->_red; }
+int Equation::getDegree(void) const { return this->_degree; }
+Expression * Equation::getRight(void) const { return this->_right; }
+Expression * Equation::getLeft(void) const { return this->_left; }
 
 void Equation::solveDegree(void)
 {
@@ -89,46 +76,27 @@ void Equation::setReducedForm(void)
 {
     std::vector<float> left = this->_left->getExpr();
     std::vector<float> right = this->_right->getExpr();
-    // std::string str;
     std::string str;
 
-    // std::string x0 = " X^0 ";
-    // std::string x1 = " X^1 ";
-    // std::string x2 = " X^2 ";
-    // std::string less = " - ";
-    // std::string plus = " + ";
-    // std::stringstream x1;
-    // x1 << "X^0";
     str += left[0] ? (floatToString(left[0])) += X0 : "0 ";
-    if (left[1])
+    if (left.size() == 2)
         str += (left[1] < 0) ? LESS += (floatToString(left[1] * -1.0)) += X1 : (PLUS += floatToString(left[1])) += X1;
-    if (left[2])
+    if (left.size() == 3)
         str += (left[2] < 0) ? LESS += (floatToString(left[2] * -1.0)) += X2 : (PLUS += floatToString(left[2])) += X2;
     str += EGUAL;
     str += right[0] ? floatToString(right[0]) += X0 : "0 ";
-    if (right[1])
+    if (right.size() == 2)
         str += (right[1] < 0) ? LESS += (floatToString(right[1] * -1.0)) += X1 : (PLUS += floatToString(right[1])) += X1;
-    if (right[2])
+    if (right.size() == 3)
         str += (right[2] < 0) ? LESS += (floatToString(left[2] * -1.0)) += X2 : (PLUS += floatToString(right[2])) += X2;
     this->_red = str;
 }
-
-// std::string OP = "+-";
-// std::string X = " * ";
-// std::string EGUAL = "= ";
-// std::string X0 = " * X^0 ";
-// std::string X1 = " * X^1 ";
-// std::string X2 = " * X^2 ";
-// std::string PLUS = " + ";
-// std::string LESS = " - ";
 
 void Equation::reducedForm(void)
 {
     std::vector<float> left = this->_left->getExpr();
     std::vector<float> right = this->_right->getExpr();
 
-
-    // std::cout << *this->_left << *this->_right;
     if (left[0] && right[0] && (right[0] <= left[0]))
     {
         this->_left->setA(left[0] - right[0]);
@@ -164,8 +132,8 @@ std::string Equation::delSpaces(const std::string & str)
 
 std::ostream & operator<<(std::ostream & o, const Equation & rhs)
 {
-    o << "Expression : " << rhs.getExpression() << std::endl
-    << "Reduced expression : " << rhs.getRedExpr() << std::endl
+    // o << "Expression : " << rhs.getExpression() << std::endl
+    o << "Reduced expression : " << rhs.getRedExpr() << std::endl
     << "Polynomial degree : " << rhs.getDegree() << std::endl;
     return o;
 }
