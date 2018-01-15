@@ -6,7 +6,7 @@
 /*   By: rfulop <rfulop@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/06 05:47:13 by rfulop            #+#    #+#             */
-/*   Updated: 2018/01/15 14:22:08 by rfulop           ###   ########.fr       */
+/*   Updated: 2018/01/15 15:49:58 by rfulop           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,14 @@
 Equation::Equation(std::string expression)
 : _expression(expression), _degree(0)
 {
-    solveDegree();
-    std::string str = delSpaces(this->_expression);
     try
     {
-        this->_left = new Expression(str.substr(0, str.find('=')), this->_degree);
-        this->_right = new Expression(str.substr(str.find('=') + 1), this->_degree);
+        this->_degree = solveDegree(this->_expression);
+        std::string str = delSpaces(this->_expression);
+        std::string leftStr = str.substr(0, str.find('='));
+        std::string rightStr = str.substr(str.find('=') + 1);
+        this->_left = new Expression(leftStr, solveDegree(leftStr));
+        this->_right = new Expression(rightStr, solveDegree(rightStr));
     }
     catch(std::exception & e)
     {
@@ -50,19 +52,23 @@ int Equation::getDegree(void) const { return this->_degree; }
 Expression * Equation::getRight(void) const { return this->_right; }
 Expression * Equation::getLeft(void) const { return this->_left; }
 
-void Equation::solveDegree(void)
+int Equation::solveDegree(std::string expr)
 {
-    std::string str = delSpaces(this->_expression);
+    int degree = 0;
+    std::string str = delSpaces(expr);
     for (unsigned int i = 0; i < str.size(); ++i)
     {
         if (str[i] == 'X' && str[i + 1] == '^' && isdigit(str[i + 2]))
         {
-            if (std::atoi(&str[i + 2]) > this->_degree)
-                this->_degree = std::atoi(&str[i + 2]);
+            if (!i || str[i - 1] != '*')
+                throw std::exception();
+            if (std::atoi(&str[i + 2]) > degree)
+                degree = std::atoi(&str[i + 2]);
         }
     }
-    if (!this->_degree && str.rfind("X^") != std::string::npos)
-        this->_degree = 1;
+    if (!degree && str.rfind("X^") != std::string::npos)
+        degree = 1;
+    return degree;
 }
 
 std::string Equation::floatToString(float n)
@@ -72,23 +78,32 @@ std::string Equation::floatToString(float n)
     return ss.str();
 }
 
-void Equation::setReducedForm(void)
+std::string Equation::setReducedSide(std::vector<float> side)
 {
-    std::vector<float> left = this->_left->getExpr();
-    std::vector<float> right = this->_right->getExpr();
     std::string str;
 
-    str += left[0] ? (floatToString(left[0])) += X0 : "0 ";
-    if (left.size() == 2)
-        str += (left[1] < 0) ? LESS += (floatToString(left[1] * -1.0)) += X1 : (PLUS += floatToString(left[1])) += X1;
-    if (left.size() == 3)
-        str += (left[2] < 0) ? LESS += (floatToString(left[2] * -1.0)) += X2 : (PLUS += floatToString(left[2])) += X2;
+    str += side[0] ? (floatToString(side[0])) += X0 : "0 ";
+    for (unsigned long i = 1; i < side.size(); ++i)
+    {
+        std::stringstream ss;
+        ss << " * X^" << i << " ";
+        std::string X = ss.str();
+        if (side[i])
+        {
+            str += (side[i] < 0) ? LESS : PLUS;
+            str += (side[i] < 0) ? (floatToString(side[i] * -1.0)) += X : (floatToString(side[i])) += X;
+        }
+    }
+    return str;
+}
+
+void Equation::setReducedForm(void)
+{
+    std::string str;
+
+    str = setReducedSide(this->_left->getExpr());
     str += EGUAL;
-    str += right[0] ? floatToString(right[0]) += X0 : "0 ";
-    if (right.size() == 2)
-        str += (right[1] < 0) ? LESS += (floatToString(right[1] * -1.0)) += X1 : (PLUS += floatToString(right[1])) += X1;
-    if (right.size() == 3)
-        str += (right[2] < 0) ? LESS += (floatToString(left[2] * -1.0)) += X2 : (PLUS += floatToString(right[2])) += X2;
+    str += setReducedSide(this->_right->getExpr());
     this->_red = str;
 }
 
@@ -97,20 +112,14 @@ void Equation::reducedForm(void)
     std::vector<float> left = this->_left->getExpr();
     std::vector<float> right = this->_right->getExpr();
 
-    if (left[0] && right[0] && (right[0] <= left[0]))
+    for (int i = 0; i <= this->_degree; ++i)
     {
-        this->_left->setA(left[0] - right[0]);
-        this->_right->setA(0.0);
-    }
-    if (left[1] && right[1] && (right[1] <= left[1]))
-    {
-        this->_left->setB(left[1] - right[1]);
-        this->_right->setB(0.0);
-    }
-    if (left[2] && right[2] && (right[2] <= left[2] ))
-    {
-        this->_left->setC(left[2] - right[2]);
-        this->_right->setC(0.0);
+        if (left.size() >= static_cast<unsigned long>(i) &&
+        right.size() >= static_cast<unsigned long>(i) && (right[i] <= left[i]))
+        {
+            this->_left->setI(i, left[i] - right[i]);
+            this->_right->setI(i, 0.0);
+        }
     }
 }
 

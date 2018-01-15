@@ -6,7 +6,7 @@
 /*   By: rfulop <rfulop@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/06 05:47:13 by rfulop            #+#    #+#             */
-/*   Updated: 2018/01/15 14:22:22 by rfulop           ###   ########.fr       */
+/*   Updated: 2018/01/15 15:51:30 by rfulop           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,13 @@ Expression::Expression(std::string str, int degree)
         if (((f1 < f0) && f1 != -1)  || ((f2 < f0) && (f2 != -1)) || f0 == -1)
             throw std::exception();
         this->_expr.push_back(std::atof(str.c_str()));
-        if (degree >= 1)
-            this->_expr.push_back(std::atof(str.c_str() + str.find_first_of(OP)));
-        if (degree >= 2)
-        this->_expr.push_back(std::atof(str.c_str() + str.find_last_of(OP)));
+        for (int i = 1; i <= degree; ++i)
+        {
+            std::stringstream ss;
+            ss << "X^" << i - 1;
+            int pos = str.find(ss.str());
+            this->_expr.push_back(std::atof(str.c_str() + str.find_first_of(OP, pos)));
+        }
     }
 }
 
@@ -54,6 +57,7 @@ float Expression::getDelta(void) const { return this->_delta; }
 std::vector<float> Expression::getExpr(void) const { return this->_expr; }
 std::vector<float> Expression::getSolutions(void) const { return this->_solutions; }
 
+void Expression::setI(int i, float n) { this->_expr[i] = n; }
 void Expression::setA(float n) { this->_expr[0] = n; }
 void Expression::setB(float n) { this->_expr[1] = n; }
 void Expression::setC(float n) { this->_expr[2] = n; }

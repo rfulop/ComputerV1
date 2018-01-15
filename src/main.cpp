@@ -6,7 +6,7 @@
 /*   By: rfulop <rfulop@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/06 05:47:13 by rfulop            #+#    #+#             */
-/*   Updated: 2018/01/15 13:43:43 by rfulop           ###   ########.fr       */
+/*   Updated: 2018/01/15 15:50:40 by rfulop           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,12 @@ int main(int argc, char **argv)
 		Equation e(argv[1]);
 		e.reducedForm();
 		e.setReducedForm();
-		e.solveDegree();
 		e.solve();
 		std::cout << e;
 		if (e.getDegree() > 2)
 			std::cout << "The Polynomial degree is stricty greater than 2, I can't solve." << std::endl;
 		else
 			std::cout << *e.getLeft();
-
     }
 	return 0;
 }

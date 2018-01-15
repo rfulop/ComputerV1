@@ -6,7 +6,7 @@
 /*   By: rfulop <rfulop@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/06 05:47:13 by rfulop            #+#    #+#             */
-/*   Updated: 2018/01/15 00:19:12 by rfulop           ###   ########.fr       */
+/*   Updated: 2018/01/15 15:43:25 by rfulop           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,11 @@ public:
     Expression* getLeft(void) const;
 
     std::string delSpaces(const std::string & str);
-    void solveDegree(void);
+    int solveDegree(std::string expr);
     void solve(void);
 
     std::string floatToString(float n);
+    std::string setReducedSide(std::vector<float> side);
     void setReducedForm(void);
     void reducedForm(void);
 
