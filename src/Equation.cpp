@@ -6,7 +6,7 @@
 /*   By: rfulop <rfulop@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/06 05:47:13 by rfulop            #+#    #+#             */
-/*   Updated: 2018/01/14 02:34:23 by rfulop           ###   ########.fr       */
+/*   Updated: 2018/01/15 00:22:36 by rfulop           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,53 +78,49 @@ void Equation::solveDegree(void)
         this->_degree = 1;
 }
 
+std::string Equation::floatToString(float n)
+{
+    std::stringstream ss;
+    ss << std::fixed << std::setprecision(1) << n;
+    return ss.str();
+}
+
 void Equation::setReducedForm(void)
 {
     std::vector<float> left = this->_left->getExpr();
     std::vector<float> right = this->_right->getExpr();
+    // std::string str;
     std::string str;
 
-    if (left[0])
-    {
-        str += std::to_string(left[0]);
-        str += X0;
-    }
-    else
-        str += "0 ";
+    // std::string x0 = " X^0 ";
+    // std::string x1 = " X^1 ";
+    // std::string x2 = " X^2 ";
+    // std::string less = " - ";
+    // std::string plus = " + ";
+    // std::stringstream x1;
+    // x1 << "X^0";
+    str += left[0] ? (floatToString(left[0])) += X0 : "0 ";
     if (left[1])
-    {
-        str += left[1] < 0 ? LESS : PLUS;
-        str += left[1] < 0 ? std::to_string(left[1] * -1.0) : std::to_string(left[1]);
-        str += X1;
-    }
+        str += (left[1] < 0) ? LESS += (floatToString(left[1] * -1.0)) += X1 : (PLUS += floatToString(left[1])) += X1;
     if (left[2])
-    {
-        str += left[1] < 0 ? LESS : PLUS;
-        str += left[2] < 0 ? std::to_string(left[2] * -1.0) : std::to_string(left[2]);
-        str += X2;
-    }
+        str += (left[2] < 0) ? LESS += (floatToString(left[2] * -1.0)) += X2 : (PLUS += floatToString(left[2])) += X2;
     str += EGUAL;
-    if (right[0])
-    {
-        str += std::to_string(right[0]);
-        str += X0;
-    }
-    else
-        str += "0 ";
+    str += right[0] ? floatToString(right[0]) += X0 : "0 ";
     if (right[1])
-    {
-        str += right[1] < 0 ? LESS : PLUS;
-        str += right[1] < 0 ? std::to_string(right[1] * -1.0) : std::to_string(right[1]);
-        str += X1;
-    }
+        str += (right[1] < 0) ? LESS += (floatToString(right[1] * -1.0)) += X1 : (PLUS += floatToString(right[1])) += X1;
     if (right[2])
-    {
-        str += right[1] < 0 ? LESS : PLUS;
-        str +=right[2] < 0 ? std::to_string(right[2] * -1.0) : std::to_string(right[2]);
-        str += X2;
-    }
+        str += (right[2] < 0) ? LESS += (floatToString(left[2] * -1.0)) += X2 : (PLUS += floatToString(right[2])) += X2;
     this->_red = str;
 }
+
+// std::string OP = "+-";
+// std::string X = " * ";
+// std::string EGUAL = "= ";
+// std::string X0 = " * X^0 ";
+// std::string X1 = " * X^1 ";
+// std::string X2 = " * X^2 ";
+// std::string PLUS = " + ";
+// std::string LESS = " - ";
 
 void Equation::reducedForm(void)
 {

@@ -6,7 +6,7 @@
 /*   By: rfulop <rfulop@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/06 05:47:13 by rfulop            #+#    #+#             */
-/*   Updated: 2018/01/14 02:31:54 by rfulop           ###   ########.fr       */
+/*   Updated: 2018/01/15 00:19:12 by rfulop           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ public:
     void solveDegree(void);
     void solve(void);
 
+    std::string floatToString(float n);
     void setReducedForm(void);
     void reducedForm(void);
 
