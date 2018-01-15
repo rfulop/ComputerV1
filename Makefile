@@ -11,7 +11,7 @@
 # **************************************************************************** #
 .PHONY: all, clean, fclean, re
 
-CC = g++
+CC = clang++
 CFLAGS = -Wall -Werror -Wextra
 NAME = computerV1
 
