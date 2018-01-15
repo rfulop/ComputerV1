@@ -6,7 +6,7 @@
 /*   By: rfulop <rfulop@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/06 05:47:13 by rfulop            #+#    #+#             */
-/*   Updated: 2018/01/15 15:49:58 by rfulop           ###   ########.fr       */
+/*   Updated: 2018/01/15 15:55:24 by rfulop           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,7 +141,6 @@ std::string Equation::delSpaces(const std::string & str)
 
 std::ostream & operator<<(std::ostream & o, const Equation & rhs)
 {
-    // o << "Expression : " << rhs.getExpression() << std::endl
     o << "Reduced expression : " << rhs.getRedExpr() << std::endl
     << "Polynomial degree : " << rhs.getDegree() << std::endl;
     return o;
